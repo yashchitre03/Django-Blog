@@ -1,14 +1,40 @@
-<!DOCTYPE html>
-<html lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Title Page</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.css"/>
-    </head>
-    <body>
-        <h1>This is the Home Page!</h1>
-        <h2>Hello</h2>
-    </body>
-</html>
+{% extends "blog/base.html" %}
+{% block content %}
+{% for post in posts %}
+<article class="media">
+    <figure class="media-left">
+        <p class="image is-64x64">
+            <img src="https://bulma.io/images/placeholders/128x128.png">
+        </p>
+    </figure>
+    <div class="media-content">
+        <div class="content">
+            <p>
+                <strong>{{post.title}}</strong> <small>{{post.author}}</small> <small>{{post.date_posted}}</small>
+                <br>
+                {{post.content}}
+            </p>
+        </div>
+    </div>
+
+    <!-- 
+         <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-reply"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-heart"></i></span>
+          </a>
+        </div>
+      </nav> 
+    <div class="media-right">
+        <button class="delete"></button>
+    </div>
+-->
+</article>
+{% endfor %}
+{% endblock content %}
