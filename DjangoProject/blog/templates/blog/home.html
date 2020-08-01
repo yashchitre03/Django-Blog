@@ -2,22 +2,26 @@
 {% block content %}
 {% for post in posts %}
 <article class="media">
-    <figure class="media-left">
-        <p class="image is-64x64">
-            <img src="https://bulma.io/images/placeholders/128x128.png">
-        </p>
-    </figure>
-    <div class="media-content">
-        <div class="content">
-            <p>
-                <strong>{{post.title}}</strong> <small>{{post.author}}</small> <small>{{post.date_posted}}</small>
-                <br>
-                {{post.content}}
-            </p>
-        </div>
+  <figure class="media-left">
+    <p class="image is-64x64">
+      <img src="https://bulma.io/images/placeholders/128x128.png">
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="content">
+      <p>
+        <strong class="title is-5">{{post.title}}</strong>
+        <br>
+        {{post.content}}
+      </p>
     </div>
+  </div>
+  <div class="media-right">
+    <small class="px-2 tag is-dark">{{post.author}}</small>
+    <small class="tag is-info">{{post.date_posted|date:"D M j, Y"}}</small>
+  </div>
 
-    <!-- 
+  <!-- 
          <nav class="level is-mobile">
         <div class="level-left">
           <a class="level-item">
