@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="">
 
@@ -63,7 +64,7 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-primary">
+                        <a class="button is-primary" href="{%url 'users-register'%}">
                             <strong>Sign up</strong>
                         </a>
                         <a class="button is-light">
@@ -76,6 +77,13 @@
     </nav>
 
     <section class="section">
+        {% if messages%}
+        {% for message in messages %}
+        <div class="notification is-{{ message.tags }}">
+            {{ message}}
+        </div>
+        {% endfor %}
+        {% endif %}
         <div class="container">
             {% block content %}{% endblock %}
         </div>
