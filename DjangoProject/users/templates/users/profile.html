@@ -1,4 +1,25 @@
 {% extends "blog/base.html" %}
 {% block content %}
-<h1 class="title">{{ user.username }}</h1>
+<div class="columns is-centered">
+    <div class="box column is-narrow">
+        <article class="media">
+            <figure class="media-left">
+                <p class="image is-64x64">
+                    <img src="{{ user.profile.image.url }}">
+                </p>
+            </figure>
+
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                        <strong class="title is-5">{{ user.username }}</strong>
+                        <br>
+                        <strong class="title is-6">{{ user.email }}</strong>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+    </div>
+</div>
 {% endblock content %}
