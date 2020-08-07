@@ -20,6 +20,39 @@
             </div>
 
         </article>
+
+        <br>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label class="label is-large">Update your Profile</label>
+            {% for field in u_form %}
+            <div class="field">
+                <div class="help is-danger">{{ field.errors }}</div>
+                <div class="label">{{ field.label_tag }}</div>
+                {{ field }}
+                {% if field.help_text %}
+                <div class="help is-info">{{ field.help_text|safe }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            {% for field in p_form %}
+            <div class="field">
+                <div class="help is-danger">{{ field.errors }}</div>
+                <div class="label">{{ field.label_tag }}</div>
+                {{ field }}
+                {% if field.help_text %}
+                <div class="help is-info">{{ field.help_text|safe }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button class="button is-success" type="submit">Update</button>
+
+        </form>
+
     </div>
 </div>
 {% endblock content %}

@@ -1,25 +1,24 @@
 {% extends "blog/base.html" %}
 {% block content %}
-{% for post in posts %}
 <div class="box">
   <article class="media">
     <figure class="media-left">
       <p class="image is-64x64">
-        <img src="{{ post.author.profile.image.url }}">
+        <img src="{{ object.author.profile.image.url }}">
       </p>
     </figure>
     <div class="media-content">
       <div class="content">
-        <a href="{% url 'post-detail' post.id %}">
-          <strong class="title is-5">{{post.title}}</strong>
-        </a>
-        <br>
-        {{post.content}}
+        <p>
+          <strong class="title is-5">{{object.title}}</strong>
+          <br>
+          {{object.content}}
+        </p>
       </div>
     </div>
     <div class="media-right">
-      <small class="px-2 tag is-dark">{{post.author}}</small>
-      <small class="tag is-info">{{post.date_posted|date:"D M j, Y"}}</small>
+      <small class="px-2 tag is-dark">{{object.author}}</small>
+      <small class="tag is-info">{{object.date_posted|date:"D M j, Y"}}</small>
     </div>
 
     <!-- 
@@ -42,5 +41,4 @@
 -->
   </article>
 </div>
-{% endfor %}
 {% endblock content %}
