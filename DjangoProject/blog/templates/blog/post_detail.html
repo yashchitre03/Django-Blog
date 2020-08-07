@@ -1,44 +1,28 @@
 {% extends "blog/base.html" %}
 {% block content %}
-<div class="box">
-  <article class="media">
-    <figure class="media-left">
-      <p class="image is-64x64">
-        <img src="{{ object.author.profile.image.url }}">
-      </p>
-    </figure>
-    <div class="media-content">
-      <div class="content">
-        <p>
-          <strong class="title is-5">{{object.title}}</strong>
-          <br>
-          {{object.content}}
-        </p>
-      </div>
+<div class="card">
+  <header class="card-header">
+    <div class="image is-64x64">
+      <img src="{{ object.author.profile.image.url }}">
     </div>
-    <div class="media-right">
-      <small class="px-2 tag is-dark">{{object.author}}</small>
+    <p class="card-header-title">
+      {{object.title}}
+    </p>
+    <div class="mt-4 mr-4">
+      <small class="tag is-dark">{{object.author}}</small>
       <small class="tag is-info">{{object.date_posted|date:"D M j, Y"}}</small>
     </div>
-
-    <!-- 
-         <nav class="level is-mobile">
-        <div class="level-left">
-          <a class="level-item">
-            <span class="icon is-small"><i class="fas fa-reply"></i></span>
-          </a>
-          <a class="level-item">
-            <span class="icon is-small"><i class="fas fa-retweet"></i></span>
-          </a>
-          <a class="level-item">
-            <span class="icon is-small"><i class="fas fa-heart"></i></span>
-          </a>
-        </div>
-      </nav> 
-    <div class="media-right">
-        <button class="delete"></button>
+  </header>
+  <div class="card-content">
+    <div class="content">
+      {{object.content}}
     </div>
--->
-  </article>
+  </div>
+  {% if object.author == user %}
+  <footer class="card-footer">
+    <a href="{% url 'post-update' object.id %}" class="card-footer-item">Edit</a>
+    <a href="{% url 'post-delete' object.id %}" class="card-footer-item">Delete</a>
+  </footer>
+  {% endif %}
 </div>
 {% endblock content %}

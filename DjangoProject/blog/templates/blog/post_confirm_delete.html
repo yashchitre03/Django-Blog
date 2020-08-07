@@ -1,0 +1,15 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<div class="columns is-centered">
+    <div class="box column is-narrow">
+        <form method="POST">
+            {% csrf_token %}
+            <label class="label is-large">Delete Post</label>
+            <p>Are you sure you want to delete the post: "{{ object.title }}"?</p>
+            <br>
+            <button class="button is-danger" type="submit">Delete</button>
+            <a class="button is-success is-light" href="{% url 'post-detail' object.id %}">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock content %}
