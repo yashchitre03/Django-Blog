@@ -9,7 +9,7 @@
       {{object.title}}
     </p>
     <div class="mt-4 mr-4">
-      <small class="tag is-dark">{{object.author}}</small>
+      <a class="tag is-dark" href="{% url 'user-posts' post.author.username %}">{{object.author}}</a>
       <small class="tag is-info">{{object.date_posted|date:"D M j, Y"}}</small>
     </div>
   </header>

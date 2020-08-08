@@ -1,0 +1,96 @@
+{% extends "blog/base.html" %}
+{% block content %}
+
+<section class="hero is-primary is-bold">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                {{ view.kwargs.username }}
+            </h1>
+            <h2 class="subtitle">
+                {{ page_obj.paginator.count }} posts
+            </h2>
+        </div>
+    </div>
+</section>
+
+{% for post in posts %}
+<div class="box">
+    <article class="media">
+        <figure class="media-left">
+            <p class="image is-64x64">
+                <img class="is-rounded" src="{{ post.author.profile.image.url }}">
+            </p>
+        </figure>
+        <div class="media-content">
+            <div class="content">
+                <a href="{% url 'post-detail' post.id %}">
+                    <strong class="title is-5">{{post.title}}</strong>
+                </a>
+                <br>
+                {{post.content}}
+            </div>
+        </div>
+        <div class="media-right">
+            <a class="px-2 tag is-dark" href="{% url 'user-posts' post.author.username %}">{{post.author}}</a>
+            <small class="tag is-info">{{post.date_posted|date:"D M j, Y"}}</small>
+        </div>
+
+        <!-- 
+         <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-reply"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-small"><i class="fas fa-heart"></i></span>
+          </a>
+        </div>
+      </nav> 
+    <div class="media-right">
+        <button class="delete"></button>
+    </div>
+-->
+    </article>
+</div>
+{% endfor %}
+
+<nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+    {% if is_paginated %}
+    {% if page_obj.has_previous %}
+    <a class="pagination-previous" href="?page=1">First</a>
+    <a class="pagination-previous" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% else %}
+    <a class="pagination-previous" title="This is the first page" disabled>First</a>
+    <a class="pagination-previous" title="This is the first page" disabled>Previous</a>
+    {% endif %}
+
+    <ul class="pagination-list">
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li>
+            <a class="pagination-link is-current" aria-label="Page {{ num }}" aria-current="page"
+                href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <li>
+            <a class="pagination-link" aria-label="Goto page {{ num }}" href="?page={{ num}}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    {% if page_obj.has_next %}
+    <a class="pagination-next" href="?page={{ page_obj.next_page_number }}">Next</a>
+    <a class="pagination-next" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% else %}
+    <a class="pagination-next" title="This is the last page" disabled>Next</a>
+    <a class="pagination-next" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+    {% endif %}
+</nav>
+
+{% endblock content %}
