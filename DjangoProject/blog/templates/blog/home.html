@@ -1,5 +1,18 @@
 {% extends "blog/base.html" %}
 {% block content %}
+<form method="GET" action="">
+  <div class="field is-grouped">
+    <p class="control is-expanded">
+      <input class="input" type="search" placeholder="Search a title" value="{{query}}" name="search">
+    </p>
+    <p class="control">
+      <button class="button is-info" type="submit">
+        Search
+      </button>
+    </p>
+  </div>
+</form>
+<br>
 {% for post in posts %}
 <div class="box">
   <article class="media">
@@ -42,6 +55,8 @@
 -->
   </article>
 </div>
+{% empty %}
+<h1 class="title">No Posts found</h1>
 {% endfor %}
 
 <nav class="pagination is-rounded" role="navigation" aria-label="pagination">

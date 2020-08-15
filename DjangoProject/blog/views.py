@@ -18,6 +18,24 @@ class PostListView(ListView):
     paginate_by = 6
 
 
+    def get_queryset(self):
+        result = super().get_queryset()
+        query = self.request.GET.get('search')
+        if query:
+            result = Post.objects.filter(title__icontains=query).order_by('-date_posted')
+        return result
+
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('search')
+        if not query:
+            query = ''
+        context['query'] = query
+
+        return context
+
+
 class UserPostListView(ListView):
     model = Post
     template_name = 'blog/user_posts.html'
