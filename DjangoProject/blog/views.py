@@ -32,7 +32,6 @@ class PostListView(ListView):
         if not query:
             query = ''
         context['query'] = query
-
         return context
 
 
@@ -46,7 +45,20 @@ class UserPostListView(ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
+        result = Post.objects.filter(author=user)
+        query = self.request.GET.get('search')
+        if query:
+            result = Post.objects.filter(title__icontains=query)
+        return result.order_by('-date_posted')
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('search')
+        if not query:
+            query = ''
+        context['query'] = query
+        return context
 
 
 class PostDetailView(DetailView):
