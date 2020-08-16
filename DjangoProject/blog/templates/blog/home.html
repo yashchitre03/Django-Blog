@@ -17,9 +17,9 @@
 <div class="box">
   <article class="media">
     <figure class="media-left">
-      <p class="image is-64x64">
+      <a href="{% url 'user-posts' post.author.username %}" class="image is-64x64">
         <img class="is-rounded" src="{{ post.author.profile.image.url }}">
-      </p>
+      </a>
     </figure>
     <div class="media-content">
       <div class="content">
@@ -27,17 +27,18 @@
           <strong class="title is-5">{{post.title}}</strong>
         </a>
         <br>
+        {% for tag in post.tags.all %}
+        <small class="tag is-info is-light">#{{tag}}</small>
+        {% endfor %}
+        <br>
         {{post.content}}
       </div>
     </div>
     <div class="media-right">
       <a class="px-2 tag is-dark" href="{% url 'user-posts' post.author.username %}">{{post.author}}</a>
-      <small class="tag is-info">{{post.date_posted|date:"D M j, Y"}}</small>
+      <small class="tag is-primary">{{post.date_posted|date:"D M j, Y"}}</small>
     </div>
 
-    {% for tag in post.tags.all %}
-    <p>{{tag}}</p>
-    {% endfor %}
     <!-- 
          <nav class="level is-mobile">
         <div class="level-left">
