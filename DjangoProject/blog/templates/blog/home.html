@@ -35,6 +35,9 @@
       <small class="tag is-info">{{post.date_posted|date:"D M j, Y"}}</small>
     </div>
 
+    {% for tag in post.tags.all %}
+    <p>{{tag}}</p>
+    {% endfor %}
     <!-- 
          <nav class="level is-mobile">
         <div class="level-left">
