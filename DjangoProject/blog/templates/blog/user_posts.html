@@ -15,26 +15,35 @@
 </section>
 <br>
 <form method="GET" action="">
-    <div class="field is-grouped">
-        <p class="control is-expanded">
-            <input class="input" type="search" placeholder="Search a title" value="{{query}}" name="search">
-        </p>
-        <p class="control">
-            <button class="button is-info" type="submit">
-                Search
-            </button>
-        </p>
+    <div class="field has-addons has-addons-centered">
+      <p class="control">
+        <span class="select">
+          <select name="options">
+            <option value="title">Title</option>
+            <option value="content">Content</option>
+            <option value="tag">Tag</option>
+          </select>
+        </span>
+      </p>
+      <p class="control is-expanded">
+        <input class="input" type="search" placeholder="Search for posts" value="{{query}}" name="search">
+      </p>
+      <p class="control" type="submit">
+        <button class="button is-primary">
+          Search
+        </button>
+      </p>
     </div>
-</form>
+  </form>
 <br>
 
 {% for post in posts %}
 <div class="box">
     <article class="media">
         <figure class="media-left">
-            <p class="image is-64x64">
+            <a href="{% url 'user-posts' post.author.username %}" class="image is-64x64">
                 <img class="is-rounded" src="{{ post.author.profile.image.url }}">
-            </p>
+            </a>
         </figure>
         <div class="media-content">
             <div class="content">
@@ -42,12 +51,16 @@
                     <strong class="title is-5">{{post.title}}</strong>
                 </a>
                 <br>
+                {% for tag in post.tags.all %}
+                <small class="tag is-info is-light">#{{tag}}</small>
+                {% endfor %}
+                <br>
                 {{post.content}}
             </div>
         </div>
         <div class="media-right">
             <a class="px-2 tag is-dark" href="{% url 'user-posts' post.author.username %}">{{post.author}}</a>
-            <small class="tag is-info">{{post.date_posted|date:"D M j, Y"}}</small>
+            <small class="tag is-primary">{{post.date_posted|date:"D M j, Y"}}</small>
         </div>
 
         <!-- 
@@ -106,5 +119,7 @@
     {% endif %}
     {% endif %}
 </nav>
+
+{{option|json_script:"optionSelected"}}
 
 {% endblock content %}

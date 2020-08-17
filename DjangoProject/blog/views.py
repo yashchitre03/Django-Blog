@@ -9,6 +9,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 
 # Create your views here.
+def getResult(option, query):
+    if option == 'title':
+        result = Post.objects.filter(title__icontains=query)
+    elif option == 'content':
+        result = Post.objects.filter(content__icontains=query)
+    else:
+        tags = query.split()
+        result = Post.objects.filter(tags__name__in=tags)
+    return result
 
 class PostListView(ListView):
     model = Post
@@ -20,17 +29,19 @@ class PostListView(ListView):
 
     def get_queryset(self):
         result = super().get_queryset()
+        option = self.request.GET.get('options')
         query = self.request.GET.get('search')
-        if query:
-            result = Post.objects.filter(title__icontains=query).order_by('-date_posted')
-        return result
+        if query: result = getResult(option, query)
+        return result.order_by('-date_posted')
 
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        option = self.request.GET.get('options')
         query = self.request.GET.get('search')
         if not query:
             query = ''
+        context['option'] = option
         context['query'] = query
         return context
 
@@ -45,18 +56,21 @@ class UserPostListView(ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
-        result = Post.objects.filter(author=user)
+        option = self.request.GET.get('options')
         query = self.request.GET.get('search')
-        if query:
-            result = Post.objects.filter(title__icontains=query)
+        result = Post.objects
+        if query: result = getResult(option, query)
+        result = result.filter(author=user)
         return result.order_by('-date_posted')
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        option = self.request.GET.get('options')
         query = self.request.GET.get('search')
         if not query:
             query = ''
+        context['option'] = option
         context['query'] = query
         return context
 

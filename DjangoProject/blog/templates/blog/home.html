@@ -1,12 +1,21 @@
 {% extends "blog/base.html" %}
 {% block content %}
 <form method="GET" action="">
-  <div class="field is-grouped">
-    <p class="control is-expanded">
-      <input class="input" type="search" placeholder="Search a title" value="{{query}}" name="search">
-    </p>
+  <div class="field has-addons has-addons-centered">
     <p class="control">
-      <button class="button is-info" type="submit">
+      <span class="select">
+        <select name="options">
+          <option value="title">Title</option>
+          <option value="content">Content</option>
+          <option value="tag">Tag</option>
+        </select>
+      </span>
+    </p>
+    <p class="control is-expanded">
+      <input class="input" type="search" placeholder="Search for posts" value="{{query}}" name="search">
+    </p>
+    <p class="control" type="submit">
+      <button class="button is-primary">
         Search
       </button>
     </p>
@@ -97,5 +106,7 @@
   {% endif %}
   {% endif %}
 </nav>
+
+{{option|json_script:"optionSelected"}}
 
 {% endblock content %}
