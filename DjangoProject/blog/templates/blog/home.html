@@ -37,10 +37,13 @@
         </a>
         <br>
         {% for tag in post.tags.all %}
-        <small class="tag is-info is-light">#{{tag}}</small>
+        <a href="?options=tag&search={{tag}}" class="tag is-info is-light">{{tag}}</a>
         {% endfor %}
         <br>
-        {{post.content}}
+        {{post.content|truncatewords:50}}
+        {% if post.content|wordcount > 50 %}
+        <a href="{% url 'post-detail' post.id %}">read more</a>
+        {% endif %}
       </div>
     </div>
     <div class="media-right">

@@ -1,8 +1,6 @@
 {% extends "blog/base.html" %}
 {% block content %}
-<div class="columns is-centered">
-    <div class="column is-narrow">
-        <h1 class="title">You have been successfully logged out.</h1>
-    </div>
+<div class="notification is-success has-text-centered">
+    You have been successfully logged out.<br><strong>To login again goto</strong> <a href="{% url 'login' %}">Login</a>
 </div>
 {% endblock content %}

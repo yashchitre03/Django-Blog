@@ -1,7 +1,7 @@
 {% extends "blog/base.html" %}
 {% block content %}
 <div class="columns is-centered">
-    <div class="box column is-narrow">
+    <div class="box column is-half has-background-success-light has-text-centered">
         <form method="POST">
             {% csrf_token %}
 
@@ -18,7 +18,7 @@
             {% endfor %}
             <button class="button is-primary" type="submit">Log in</button>
             <br><br>
-            <a href="{% url 'password_reset' %}">Forgot password?</a>
+            <a href="{% url 'password_reset' %}">Forgot password</a>
         </form>
         <p>Don't have an account?
             <a href="{% url 'register' %}">Sign up</a>

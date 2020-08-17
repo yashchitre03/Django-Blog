@@ -16,7 +16,7 @@
   <div class="card-content">
     <div class="content">
       {% for tag in post.tags.all %}
-      <small class="tag is-info is-light">#{{tag}}</small>
+      <small class="tag is-info is-light">{{tag}}</small>
       {% endfor %}
       <br>
       {{object.content}}

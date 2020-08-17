@@ -16,25 +16,25 @@
 <br>
 <form method="GET" action="">
     <div class="field has-addons has-addons-centered">
-      <p class="control">
-        <span class="select">
-          <select name="options">
-            <option value="title">Title</option>
-            <option value="content">Content</option>
-            <option value="tag">Tag</option>
-          </select>
-        </span>
-      </p>
-      <p class="control is-expanded">
-        <input class="input" type="search" placeholder="Search for posts" value="{{query}}" name="search">
-      </p>
-      <p class="control" type="submit">
-        <button class="button is-primary">
-          Search
-        </button>
-      </p>
+        <p class="control">
+            <span class="select">
+                <select name="options">
+                    <option value="title">Title</option>
+                    <option value="content">Content</option>
+                    <option value="tag">Tag</option>
+                </select>
+            </span>
+        </p>
+        <p class="control is-expanded">
+            <input class="input" type="search" placeholder="Search for posts" value="{{query}}" name="search">
+        </p>
+        <p class="control" type="submit">
+            <button class="button is-primary">
+                Search
+            </button>
+        </p>
     </div>
-  </form>
+</form>
 <br>
 
 {% for post in posts %}
@@ -52,10 +52,13 @@
                 </a>
                 <br>
                 {% for tag in post.tags.all %}
-                <small class="tag is-info is-light">#{{tag}}</small>
+                <a href="?options=tag&search={{tag}}" class="tag is-info is-light">{{tag}}</a>
                 {% endfor %}
                 <br>
-                {{post.content}}
+                {{post.content|truncatewords:50}}
+                {% if post.content|wordcount > 50 %}
+                <a href="{% url 'post-detail' post.id %}">read more</a>
+                {% endif %}
             </div>
         </div>
         <div class="media-right">
