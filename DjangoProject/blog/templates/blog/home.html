@@ -1,4 +1,5 @@
 {% extends "blog/base.html" %}
+{% load humanize %}
 {% block content %}
 <form method="GET" action="">
   <div class="field has-addons has-addons-centered">
@@ -48,7 +49,7 @@
     </div>
     <div class="media-right">
       <a class="px-2 tag is-dark" href="{% url 'user-posts' post.author.username %}">{{post.author}}</a>
-      <small class="tag is-primary">{{post.date_posted|date:"D M j, Y"}}</small>
+      <small class="tag is-primary">{{post.date_posted|naturalday}}</small>
     </div>
 
     <!-- 

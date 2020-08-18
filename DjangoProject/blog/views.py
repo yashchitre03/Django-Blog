@@ -74,9 +74,14 @@ class UserPostListView(ListView):
         context['query'] = query
         return context
 
-
 class PostDetailView(DetailView):
     model = Post
+
+    def get(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=self.kwargs.get('pk'))
+        post.view_count += 1
+        post.save()
+        return super().get(request, *args, **kwargs)
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

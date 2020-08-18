@@ -1,6 +1,6 @@
 {% extends "blog/base.html" %}
 {% block content %}
-
+{% load humanize %}
 <section class="hero is-primary is-bold">
     <div class="hero-body">
         <div class="container">
@@ -26,7 +26,8 @@
             </span>
         </p>
         <p class="control is-expanded">
-            <input class="input" type="search" placeholder="Search for posts" value="{{query}}" name="search">
+            <input class="input" type="search" placeholder="Search for {{view.kwargs.username}}'s posts"
+                value="{{query}}" name="search">
         </p>
         <p class="control" type="submit">
             <button class="button is-primary">
@@ -63,7 +64,7 @@
         </div>
         <div class="media-right">
             <a class="px-2 tag is-dark" href="{% url 'user-posts' post.author.username %}">{{post.author}}</a>
-            <small class="tag is-primary">{{post.date_posted|date:"D M j, Y"}}</small>
+            <small class="tag is-primary">{{post.date_posted|naturalday}}</small>
         </div>
 
         <!-- 

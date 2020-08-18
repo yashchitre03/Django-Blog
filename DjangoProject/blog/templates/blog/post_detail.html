@@ -1,5 +1,6 @@
 {% extends "blog/base.html" %}
 {% block content %}
+{% load humanize %}
 <div class="card">
   <header class="card-header">
     <a href="{% url 'user-posts' post.author.username %}" class="image is-64x64">
@@ -10,7 +11,8 @@
     </a>
     <div class="mt-4 mr-4">
       <a class="tag is-dark" href="{% url 'user-posts' post.author.username %}">{{object.author}}</a>
-      <small class="tag is-primary">{{object.date_posted|date:"D M j, Y"}}</small>
+      <small class="tag is-primary">{{object.date_posted|naturalday}}</small>
+      <small class="tag is-info">{{object.view_count|intword}} views</small>
     </div>
   </header>
   <div class="card-content">

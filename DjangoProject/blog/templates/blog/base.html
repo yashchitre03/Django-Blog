@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="">
 
@@ -90,7 +91,7 @@
         </div>
     </nav>
 
-    <section class=" section">
+    <section class="section">
         {% if messages%}
         {% for message in messages %}
         <div class=" notification is-{{ message.tags }}">
