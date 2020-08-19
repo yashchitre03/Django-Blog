@@ -1,7 +1,8 @@
 {% extends "blog/base.html" %}
+{% load bulma_tags %}
 {% block content %}
 <div class="columns is-centered">
-    <div class="box column is-half has-background-success-light has-text-centered">
+    <div class="box column is-half has-background-success-light">
         <article class="media">
             <figure class="media-left">
                 <p class="image is-64x64">
@@ -26,28 +27,13 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <label class="label is-large">Update your Profile</label>
-            {% for field in u_form %}
-            <div class="field">
-                <div class="help is-danger">{{ field.errors }}</div>
-                <div class="label">{{ field.label_tag }}</div>
-                {{ field }}
-                {% if field.help_text %}
-                <div class="help is-info">{{ field.help_text|safe }}</div>
-                {% endif %}
-            </div>
-            {% endfor %}
-
+            {{ u_form|bulma }}
             {% for field in p_form %}
-            <div class="field">
-                <div class="help is-danger">{{ field.errors }}</div>
-                <div class="label">{{ field.label_tag }}</div>
-                {{ field }}
-                {% if field.help_text %}
-                <div class="help is-info">{{ field.help_text|safe }}</div>
-                {% endif %}
-            </div>
+            <strong>{{field.label_tag}}</strong>
+            <br>
+            {{ field }}
             {% endfor %}
+            <br><br>
 
             <button class="button is-success" type="submit">Update</button>
 

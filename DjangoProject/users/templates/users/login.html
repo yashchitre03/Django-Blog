@@ -1,21 +1,13 @@
 {% extends "blog/base.html" %}
+{% load bulma_tags %}
 {% block content %}
 <div class="columns is-centered">
-    <div class="box column is-half has-background-success-light has-text-centered">
+    <div class="box column is-half has-background-success-light">
         <form method="POST">
             {% csrf_token %}
 
-            <label class="label is-large">Log in to your Account</label>
-            <div class="help is-danger">{{ form.non_field_errors }}</div>
-            {% for field in form %}
-            <div class="field">
-                <div class="label">{{ field.label_tag }}</div>
-                {{ field }}
-                {% if field.help_text %}
-                <div class="help is-info">{{ field.help_text|safe }}</div>
-                {% endif %}
-            </div>
-            {% endfor %}
+            {{ form|bulma }}
+
             <button class="button is-primary" type="submit">Log in</button>
             <br><br>
             <a href="{% url 'password_reset' %}">Forgot password</a>

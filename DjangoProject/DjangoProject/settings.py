@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'taggit',
     'django.contrib.humanize',
+    'bulma',
 ]
 
 MIDDLEWARE = [
