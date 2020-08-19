@@ -1,15 +1,36 @@
 {% extends "blog/base.html" %}
 {% load bulma_tags %}
+{% load markdown_deux_tags %}
 {% block content %}
 <div class="columns is-centered">
     <div class="column box is-half has-background-success-light">
         <form method="POST">
             {% csrf_token %}
-
             {{ form|bulma }}
 
             <button class="button is-success" type="submit">Post</button>
         </form>
     </div>
 </div>
+<div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter">
+        <div class="px-3">{% markdown_cheatsheet %}</div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+<script type="text/javascript">
+    const link = document.querySelector("#ref");
+    const modal = document.querySelector(".modal");
+    const close = document.querySelector(".modal-close");
+
+    link.addEventListener("click", function () {
+        modal.classList.add("is-active");
+    });
+
+    close.addEventListener("click", function () {
+        modal.classList.remove("is-active");
+    });
+</script>
 {% endblock content %}

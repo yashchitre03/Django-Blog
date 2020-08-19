@@ -125,5 +125,12 @@
 </nav>
 
 {{option|json_script:"optionSelected"}}
+<script type="text/javascript">
+    const value = JSON.parse(document.getElementById('optionSelected').textContent);
+    if (value != null) {
+        const ele = document.querySelector(`[value = ${value}]`);
+        ele.setAttribute("selected", "");
+    }
+</script>
 
 {% endblock content %}

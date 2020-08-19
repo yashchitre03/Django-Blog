@@ -21,7 +21,7 @@
       <small class="tag is-info is-light">{{tag}}</small>
       {% endfor %}
       <br>
-      {{object.content}}
+      {{object.getMarkdown|safe}}
     </div>
   </div>
   {% if object.author == user %}

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'taggit',
     'django.contrib.humanize',
     'bulma',
+    'markdown_deux',
 ]
 
 MIDDLEWARE = [
