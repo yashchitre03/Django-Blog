@@ -26,6 +26,7 @@
   </div>
 </form>
 <br>
+
 {% for post in posts %}
 <div class="box">
   <article class="media">
@@ -34,6 +35,7 @@
         <img class="is-rounded" src="{{ post.author.profile.image.url }}">
       </a>
     </figure>
+
     <div class="media-content">
       <div class="content">
         <a href="{% url 'post-detail' post.id %}">
@@ -50,29 +52,11 @@
         {% endif %}
       </div>
     </div>
+
     <div class="media-right">
-      <a class="px-2 tag is-dark" href="{% url 'user-posts' post.author.username %}">{{post.author}}</a>
+      <a class="tag is-dark" href="{% url 'user-posts' post.author.username %}">{{post.author}}</a><br>
       <small class="tag is-primary">{{post.date_posted|naturalday}}</small>
     </div>
-
-    <!-- 
-         <nav class="level is-mobile">
-        <div class="level-left">
-          <a class="level-item">
-            <span class="icon is-small"><i class="fas fa-reply"></i></span>
-          </a>
-          <a class="level-item">
-            <span class="icon is-small"><i class="fas fa-retweet"></i></span>
-          </a>
-          <a class="level-item">
-            <span class="icon is-small"><i class="fas fa-heart"></i></span>
-          </a>
-        </div>
-      </nav> 
-    <div class="media-right">
-        <button class="delete"></button>
-    </div>
--->
   </article>
 </div>
 {% empty %}
