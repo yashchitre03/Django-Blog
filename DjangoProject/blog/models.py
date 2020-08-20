@@ -27,5 +27,5 @@ class Post(models.Model):
         return reverse('post-detail', kwargs={'pk': self.pk})
         
 
-    def getMarkdown(self):
+    def getContent(self):
         return markdown(self.content)

@@ -8,7 +8,7 @@
             <p>Are you sure you want to delete the post: "{{ object.title }}"?</p>
             <br>
             <button class="button is-danger" type="submit">Delete</button>
-            <a class="button is-success is-light" href="{% url 'post-detail' object.id %}">Cancel</a>
+            <a class="button is-primary is-light" href="{% url 'post-detail' object.id %}">Cancel</a>
         </form>
     </div>
 </div>

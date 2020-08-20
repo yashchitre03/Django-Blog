@@ -1,4 +1,5 @@
 {% extends "blog/base.html" %}
+{% load static %}
 {% block content %}
 {% load humanize %}
 <section class="hero is-primary is-bold">
@@ -13,7 +14,7 @@
         </div>
     </div>
 </section>
-<br>
+<br>    
 <form method="GET" action="">
     <div class="field has-addons has-addons-centered">
         <p class="control">
@@ -25,6 +26,8 @@
                 </select>
             </span>
         </p>
+        {{option|json_script:"optionSelected"}}
+        <script type="text/javascript" src="{% static 'blog/search.js' %}"></script>
         <p class="control is-expanded">
             <input class="input" type="search" placeholder="Search for {{view.kwargs.username}}'s posts"
                 value="{{query}}" name="search">
@@ -56,7 +59,7 @@
                 <a href="?options=tag&search={{tag}}" class="tag is-info is-light">{{tag}}</a>
                 {% endfor %}
                 <br>
-                {{post.content|truncatewords:50}}
+                {{post.getContent|truncatewords:50|striptags}}
                 {% if post.content|wordcount > 50 %}
                 <a href="{% url 'post-detail' post.id %}">read more</a>
                 {% endif %}
@@ -123,14 +126,5 @@
     {% endif %}
     {% endif %}
 </nav>
-
-{{option|json_script:"optionSelected"}}
-<script type="text/javascript">
-    const value = JSON.parse(document.getElementById('optionSelected').textContent);
-    if (value != null) {
-        const ele = document.querySelector(`[value = ${value}]`);
-        ele.setAttribute("selected", "");
-    }
-</script>
 
 {% endblock content %}

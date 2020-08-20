@@ -1,6 +1,8 @@
 {% extends "blog/base.html" %}
 {% block content %}
 <div class="notification is-success has-text-centered">
+    <button class="delete"></button>
     You have been successfully logged out.<br><strong>To login again goto</strong> <a href="{% url 'login' %}">Login</a>
 </div>
+<script text="text/javascript" src="{% static 'users/notif.js' %}"></script>
 {% endblock content %}

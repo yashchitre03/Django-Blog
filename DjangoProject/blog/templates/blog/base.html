@@ -91,21 +91,23 @@
             </div>
         </div>
     </nav>
+    <script text="text/javascript" src="{% static 'blog/hamMenu.js' %}"></script>
 
     <section class="section">
         {% if messages%}
         {% for message in messages %}
         <div class=" notification is-{{ message.tags }}">
+            <button class="delete"></button>
             {{ message}}
         </div>
         {% endfor %}
         {% endif %}
+        <script text="text/javascript" src="{% static 'users/notif.js' %}"></script>
         <div class="container">
             {% block content %}{% endblock %}
         </div>
     </section>
 
-    <script src="{% static 'blog/script.js' %}"></script>
 </body>
 
 </html>

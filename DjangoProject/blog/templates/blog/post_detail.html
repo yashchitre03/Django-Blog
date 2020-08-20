@@ -12,7 +12,7 @@
     <div class="mt-4 mr-4">
       <a class="tag is-dark" href="{% url 'user-posts' post.author.username %}">{{object.author}}</a>
       <small class="tag is-primary">{{object.date_posted|naturalday}}</small>
-      <small class="tag is-info">{{object.view_count|intword}} views</small>
+      <small class="tag is-info">{{object.view_count|intword}} view{{object.view_count|pluralize:'s'}}</small>
     </div>
   </header>
   <div class="card-content">
@@ -21,7 +21,7 @@
       <small class="tag is-info is-light">{{tag}}</small>
       {% endfor %}
       <br>
-      {{object.getMarkdown|safe}}
+      {{object.getContent|safe}}
     </div>
   </div>
   {% if object.author == user %}
