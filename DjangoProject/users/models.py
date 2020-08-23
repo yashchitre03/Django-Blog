@@ -1,10 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from PIL import Image
+from django.contrib.auth import get_user_model
 
 # Create your models here.
+
+class CustomUser(AbstractUser):
+    username = models.CharField(
+        max_length=12,
+        unique=True,
+        help_text='Required. 12 characters or fewer. Letters, digits and @/./+/-/_ only.',
+        error_messages={
+            'unique': "A user with that username already exists.",
+        },
+    )
+    USERNAME_FIELD = 'username'
+
+
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
 
     def __str__(self):
