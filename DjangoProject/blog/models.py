@@ -1,5 +1,4 @@
 from django.db import models
-# from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from markdown_deux import markdown
@@ -30,3 +29,17 @@ class Post(models.Model):
 
     def getContent(self):
         return markdown(self.content)
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comment_author')
+    content = models.TextField(max_length=256)
+    date_posted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comment {self.content} posted by {self.author}'
+
+
+class Like(models.Model):
+    pass

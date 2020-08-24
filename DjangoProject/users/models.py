@@ -1,12 +1,11 @@
 from django.db import models
-# from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
 from django.contrib.auth import get_user_model
 
 # Create your models here.
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     username = models.CharField(
         max_length=12,
         unique=True,
