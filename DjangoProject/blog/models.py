@@ -18,6 +18,9 @@ class Post(models.Model):
     tags = TaggableManager()
     TAGGIT_CASE_INSENSITIVE = True
 
+    class Meta:
+        pass
+
 
     def __str__(self):
         return self.title
@@ -32,14 +35,20 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment_post')
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comment_author')
     content = models.TextField(max_length=256)
     date_posted = models.DateTimeField(auto_now_add=True)
+
+
+    class Meta:
+        pass
+
 
     def __str__(self):
         return f'Comment {self.content} posted by {self.author}'
 
 
 class Like(models.Model):
-    pass
+    class Meta:
+        pass
