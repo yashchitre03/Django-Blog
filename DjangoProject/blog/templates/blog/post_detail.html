@@ -1,6 +1,8 @@
 {% extends "blog/base.html" %}
 {% block content %}
 {% load humanize %}
+{% load bulma_tags %}
+
 <div class="card">
   <header class="card-header">
     <a href="{% url 'user-posts' post.author.username %}" class="image is-64x64">
@@ -31,7 +33,13 @@
   </footer>
   {% endif %}
 </div>
+
+<form>
+  {{ form|bulma }}
+</form>
+
 {% for comment in comments %}
 <h1 class="title">{{comment.content}}</h1>
 {% endfor %}
+
 {% endblock content %}

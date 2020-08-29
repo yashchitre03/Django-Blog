@@ -4,10 +4,11 @@ from django.views.generic import (ListView,
     CreateView,
     UpdateView,
     DeleteView)
+from django.views.generic.edit import FormMixin
 from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-# from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from .forms import CommentForm
 
 # Create your views here.
 def getResult(option, query):
@@ -32,7 +33,8 @@ class PostListView(ListView):
         result = super().get_queryset()
         option = self.request.GET.get('options')
         query = self.request.GET.get('search')
-        if query: result = getResult(option, query)
+        if query:
+            result = getResult(option, query)
         return result.order_by('-date_posted')
 
     
@@ -60,7 +62,8 @@ class UserPostListView(ListView):
         option = self.request.GET.get('options')
         query = self.request.GET.get('search')
         result = Post.objects
-        if query: result = getResult(option, query)
+        if query:
+            result = getResult(option, query)
         result = result.filter(author=user)
         return result.order_by('-date_posted')
 
@@ -75,8 +78,10 @@ class UserPostListView(ListView):
         context['query'] = query
         return context
 
-class PostDetailView(DetailView):
+class PostDetailView(DetailView, FormMixin):
     model = Post
+    form_class = CommentForm
+    success_url = '/'
 
     def get(self, request, *args, **kwargs):
         post = Post.objects.get(pk=self.kwargs.get('pk'))
@@ -91,6 +96,11 @@ class PostDetailView(DetailView):
         comments = Comment.objects.filter(post=post)
         context['comments'] = comments
         return context
+
+
+    def form_valid(self, form):
+        print(form)
+        return super().form_valid(form)
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

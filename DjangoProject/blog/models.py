@@ -19,7 +19,7 @@ class Post(models.Model):
     TAGGIT_CASE_INSENSITIVE = True
 
     class Meta:
-        pass
+        ordering = ['-date_posted']
 
 
     def __str__(self):
@@ -42,7 +42,7 @@ class Comment(models.Model):
 
 
     class Meta:
-        pass
+        ordering = ['-date_posted']
 
 
     def __str__(self):
