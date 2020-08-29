@@ -4,15 +4,15 @@
 <div class="card">
   <header class="card-header">
     <a href="{% url 'user-posts' post.author.username %}" class="image is-64x64">
-      <img src="{{ object.author.profile.image.url }}">
+      <img src="{{ post.author.profile.image.url }}">
     </a>
     <a class="card-header-title" href="{% url 'post-detail' post.id %}">
       <strong class="title is-5">{{post.title}}</strong>
     </a>
     <div class="mt-4 mr-4">
-      <a class="tag is-dark" href="{% url 'user-posts' post.author.username %}">{{object.author}}</a>
-      <small class="tag is-primary">{{object.date_posted|naturalday}}</small>
-      <small class="tag is-info">{{object.view_count|intword}} view{{object.view_count|pluralize:'s'}}</small>
+      <a class="tag is-dark" href="{% url 'user-posts' post.author.username %}">{{post.author}}</a>
+      <small class="tag is-primary">{{post.date_posted|naturalday}}</small>
+      <small class="tag is-info">{{post.view_count|intword}} view{{post.view_count|pluralize:'s'}}</small>
     </div>
   </header>
   <div class="card-content">
@@ -21,14 +21,17 @@
       <small class="tag is-info is-light">{{tag}}</small>
       {% endfor %}
       <br>
-      {{object.getContent|safe}}
+      {{post.getContent|safe}}
     </div>
   </div>
-  {% if object.author == user %}
+  {% if post.author == user %}
   <footer class="card-footer">
-    <a href="{% url 'post-update' object.id %}" class="card-footer-item">Edit</a>
-    <a href="{% url 'post-delete' object.id %}" class="card-footer-item">Delete</a>
+    <a href="{% url 'post-update' post.id %}" class="card-footer-item">Edit</a>
+    <a href="{% url 'post-delete' post.id %}" class="card-footer-item">Delete</a>
   </footer>
   {% endif %}
 </div>
+{% for comment in comments %}
+<h1 class="title">{{comment.content}}</h1>
+{% endfor %}
 {% endblock content %}

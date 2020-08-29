@@ -4,7 +4,7 @@ from django.views.generic import (ListView,
     CreateView,
     UpdateView,
     DeleteView)
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -83,6 +83,14 @@ class PostDetailView(DetailView):
         post.view_count += 1
         post.save()
         return super().get(request, *args, **kwargs)
+        
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = Post.objects.get(pk=self.kwargs.get('pk'))
+        comments = Comment.objects.filter(post=post)
+        context['comments'] = comments
+        return context
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
