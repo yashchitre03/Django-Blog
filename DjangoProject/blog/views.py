@@ -1,10 +1,13 @@
 from django.shortcuts import render, get_object_or_404
+from django.views import View
 from django.views.generic import (ListView,
     DetailView,
     CreateView,
     UpdateView,
-    DeleteView)
-from django.views.generic.edit import FormMixin
+    DeleteView,
+    FormView)
+# from django.views.generic.edit import FormMixin
+from django.views.generic.detail import SingleObjectMixin
 from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
@@ -27,7 +30,6 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 6
-
 
     def get_queryset(self):
         result = super().get_queryset()
@@ -56,7 +58,6 @@ class UserPostListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 6
 
-
     def get_queryset(self):
         user = get_object_or_404(get_user_model(), username=self.kwargs.get('username'))
         option = self.request.GET.get('options')
@@ -78,29 +79,49 @@ class UserPostListView(ListView):
         context['query'] = query
         return context
 
-class PostDetailView(DetailView, FormMixin):
+
+class PostContent(DetailView):
     model = Post
-    form_class = CommentForm
-    success_url = '/'
 
     def get(self, request, *args, **kwargs):
         post = Post.objects.get(pk=self.kwargs.get('pk'))
         post.view_count += 1
         post.save()
         return super().get(request, *args, **kwargs)
-        
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        post = Post.objects.get(pk=self.kwargs.get('pk'))
-        comments = Comment.objects.filter(post=post)
-        context['comments'] = comments
+        context['form'] = CommentForm()
         return context
 
 
+class PostComment(SingleObjectMixin, FormView):
+    template_name = 'blog/post_detail.html'
+    form_class = CommentForm
+
     def form_valid(self, form):
-        print(form)
+        comment = form.save(commit=False)
+        comment.post = Post.objects.get(id=self.kwargs.get('pk'))
+        comment.author = get_user_model().objects.get(username=self.request.user)
+        comment.save()
         return super().form_valid(form)
+
+    
+    def get_success_url(self):
+        return self.request.path
+
+
+class PostDetailView(View):
+    
+    def get(self, request, *args, **kwargs):
+        view = PostContent.as_view()
+        return view(request, *args, **kwargs)
+
+
+    def post(self, request, *args, **kwargs):
+        view = PostComment.as_view()
+        return view(request, *args, **kwargs)
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -131,7 +152,6 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     success_url = '/'
-
 
     def test_func(self):
         post = self.get_object()

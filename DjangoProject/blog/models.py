@@ -35,11 +35,10 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment_post')
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comment_author')
-    content = models.TextField(max_length=256)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_comments')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='author_comments')
+    content = models.TextField(max_length=256, verbose_name='comment', help_text='comment should not exceed 256 characters.')
     date_posted = models.DateTimeField(auto_now_add=True)
-
 
     class Meta:
         ordering = ['-date_posted']

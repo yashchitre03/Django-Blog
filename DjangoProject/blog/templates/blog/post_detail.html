@@ -34,12 +34,14 @@
   {% endif %}
 </div>
 
-<form>
+<form method="POST">
+  {% csrf_token %}
   {{ form|bulma }}
+  <button class="button is-success" type="submit">Post</button>
 </form>
 
-{% for comment in comments %}
-<h1 class="title">{{comment.content}}</h1>
+{% for comment in post.post_comments.all %}
+<h1 class="title">{{ comment }}</h1>
 {% endfor %}
 
 {% endblock content %}
