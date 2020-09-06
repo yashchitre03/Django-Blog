@@ -100,7 +100,7 @@ class PostContent(DetailView):
         return context
 
 
-class PostComment(SingleObjectMixin, FormView):
+class PostComment(LoginRequiredMixin, SingleObjectMixin, FormView):
     template_name = 'blog/post_detail.html'
     form_class = CommentForm
 

@@ -21,7 +21,6 @@ class Post(models.Model):
     class Meta:
         ordering = ['-date_posted']
 
-
     def __str__(self):
         return self.title
 
@@ -43,11 +42,14 @@ class Comment(models.Model):
     class Meta:
         ordering = ['-date_posted']
 
-
     def __str__(self):
         return f'Comment {self.content} posted by {self.author}'
 
 
 class Like(models.Model):
+
     class Meta:
+        pass
+
+    def __str__(self):
         pass
