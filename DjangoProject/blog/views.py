@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import (ListView,
-    DetailView,
-    CreateView,
-    UpdateView,
-    DeleteView,
-    FormView)
+                                  DetailView,
+                                  CreateView,
+                                  UpdateView,
+                                  DeleteView,
+                                  FormView)
 # from django.views.generic.edit import FormMixin
 from django.views.generic.detail import SingleObjectMixin
 from .models import Post, Comment
@@ -14,6 +14,8 @@ from django.contrib.auth import get_user_model
 from .forms import CommentForm
 
 # Create your views here.
+
+
 def getResult(option, query):
     if option == 'title':
         result = Post.objects.filter(title__icontains=query)
@@ -23,6 +25,7 @@ def getResult(option, query):
         tags = query.split()
         result = Post.objects.filter(tags__name__in=tags)
     return result
+
 
 class PostListView(ListView):
     model = Post
@@ -39,7 +42,6 @@ class PostListView(ListView):
             result = getResult(option, query)
         return result.order_by('-date_posted')
 
-    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         option = self.request.GET.get('options')
@@ -59,7 +61,8 @@ class UserPostListView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        user = get_object_or_404(get_user_model(), username=self.kwargs.get('username'))
+        user = get_object_or_404(
+            get_user_model(), username=self.kwargs.get('username'))
         option = self.request.GET.get('options')
         query = self.request.GET.get('search')
         result = Post.objects
@@ -67,7 +70,6 @@ class UserPostListView(ListView):
             result = getResult(option, query)
         result = result.filter(author=user)
         return result.order_by('-date_posted')
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -84,11 +86,13 @@ class PostContent(DetailView):
     model = Post
 
     def get(self, request, *args, **kwargs):
-        post = Post.objects.get(pk=self.kwargs.get('pk'))
-        post.view_count += 1
-        post.save()
+        print(self.request.session.get('visited', False))
+        if not self.request.session.get('visited', False):
+            post = Post.objects.get(pk=self.kwargs.get('pk'))
+            post.view_count += 1
+            post.save()
+        self.request.session['visited'] = True
         return super().get(request, *args, **kwargs)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -107,17 +111,15 @@ class PostComment(SingleObjectMixin, FormView):
         comment.save()
         return super().form_valid(form)
 
-    
     def get_success_url(self):
         return self.request.path
 
 
 class PostDetailView(View):
-    
+
     def get(self, request, *args, **kwargs):
         view = PostContent.as_view()
         return view(request, *args, **kwargs)
-
 
     def post(self, request, *args, **kwargs):
         view = PostComment.as_view()
@@ -126,7 +128,7 @@ class PostDetailView(View):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content', 'tags',]
+    fields = ['title', 'content', 'tags', ]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -135,12 +137,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content', 'tags',]
+    fields = ['title', 'content', 'tags', ]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
 
     def test_func(self):
         post = self.get_object()
