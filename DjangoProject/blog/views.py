@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.views.generic import (ListView,
                                   DetailView,
@@ -8,7 +8,7 @@ from django.views.generic import (ListView,
                                   FormView)
 # from django.views.generic.edit import FormMixin
 from django.views.generic.detail import SingleObjectMixin
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from .forms import CommentForm
@@ -86,7 +86,6 @@ class PostContent(DetailView):
     model = Post
 
     def get(self, request, *args, **kwargs):
-        print(self.request.session.get('visited', False))
         if not self.request.session.get('visited', False):
             post = Post.objects.get(pk=self.kwargs.get('pk'))
             post.view_count += 1
@@ -97,12 +96,29 @@ class PostContent(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentForm()
+
+        post = Post.objects.get(pk=self.kwargs.get('pk'))
+        context['liked'] = post.post_likes.filter(
+            user=self.request.user) and True or False
+
         return context
 
 
 class PostComment(LoginRequiredMixin, SingleObjectMixin, FormView):
     template_name = 'blog/post_detail.html'
     form_class = CommentForm
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('action') == 'like':
+            post = Post.objects.get(pk=self.kwargs.get('pk'))
+            newLike, created = Like.objects.get_or_create(
+                post=post, user=request.user)
+            if not created:
+                newLike.delete()
+
+            return redirect(request.path)
+        else:
+            return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         comment = form.save(commit=False)

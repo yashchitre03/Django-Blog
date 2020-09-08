@@ -34,14 +34,25 @@
   {% endif %}
 </div>
 
+<form method="POST" action="">
+  {% csrf_token %}
+
+  {% if not liked %}
+  <button class="button is-success" type="submit" name="action" value="like">Like</button>
+  {% else %}
+  <button class="button is-success" type="submit" name="action" value="like">Unlike</button>
+  {% endif %}
+</form>
+<h2 class="subtitle">{{ post.post_likes.count }}</h2>
+
 <form method="POST">
   {% csrf_token %}
   {{ form|bulma }}
-  <button class="button is-success" type="submit">Post</button>
+  <button class="button is-success" type="submit" name="action" value="comment">Post</button>
 </form>
 
 {% for comment in post.post_comments.all %}
-<h1 class="title">{{ comment }}</h1>
+<h1 class="subtitle">{{ comment }}</h1>
 {% endfor %}
 
 {% endblock content %}
