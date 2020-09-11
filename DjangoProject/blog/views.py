@@ -11,7 +11,10 @@ from django.views.generic.detail import SingleObjectMixin
 from .models import Post, Comment, Like
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
-from .forms import CommentForm
+from .forms import CommentForm, ReportForm
+import os
+from django.core.mail import EmailMessage
+from django.contrib import messages
 
 # Create your views here.
 
@@ -97,9 +100,10 @@ class PostContent(DetailView):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentForm()
 
-        post = Post.objects.get(pk=self.kwargs.get('pk'))
-        context['liked'] = post.post_likes.filter(
-            user=self.request.user) and True or False
+        if not self.request.user.is_anonymous:
+            post = Post.objects.get(pk=self.kwargs.get('pk'))
+            context['liked'] = post.post_likes.filter(
+                user=self.request.user) and True or False
 
         return context
 
@@ -179,3 +183,25 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'custom'})
+
+
+def report(request):
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            mail_subject = f'Issue {form.cleaned_data["category"]}: {form.cleaned_data["subject"]}'
+            mail_body = form.cleaned_data['message']
+            mail_id = os.environ.get('DJANGO-E')
+            mail = EmailMessage(mail_subject, mail_body,
+                                from_email=mail_id, to=[mail_id])
+            mail.send()
+
+            messages.success(
+                request, 'The issue has been reported to the admins')
+        else:
+            messages.error(request, 'Form submission failed.')
+        return redirect('blog-home')
+    else:
+        form = ReportForm()
+        context = {'form': form}
+    return render(request, 'blog/report.html', context)

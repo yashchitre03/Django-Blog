@@ -34,25 +34,54 @@
   {% endif %}
 </div>
 
+{% if not user.is_anonymous %}
+<br>
 <form method="POST" action="">
   {% csrf_token %}
 
   {% if not liked %}
   <button class="button is-success" type="submit" name="action" value="like">Like</button>
   {% else %}
-  <button class="button is-success" type="submit" name="action" value="like">Unlike</button>
+  <button class="button is-danger" type="submit" name="action" value="like">Unlike</button>
   {% endif %}
+  <h2 class="subtitle is-size-6">{{ post.post_likes.count }} people liked this post</h2>
 </form>
-<h2 class="subtitle">{{ post.post_likes.count }}</h2>
-
+<br>
 <form method="POST">
   {% csrf_token %}
   {{ form|bulma }}
-  <button class="button is-success" type="submit" name="action" value="comment">Post</button>
+  <button class="button is-info" type="submit" name="action" value="comment">Post</button>
 </form>
+{% endif %}
 
+<br>
 {% for comment in post.post_comments.all %}
-<h1 class="subtitle">{{ comment }}</h1>
+<article class="media">
+  <figure class="media-left">
+    <p class="image is-48x48">
+      <img src="{{ comment.author.profile.image.url }}">
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="content">
+      <p>
+        <strong>{{ comment.author }}</strong>
+        <small class="tag is-primary">{{ comment.date_posted|naturalday }}</small>
+        <br>
+      <div id="comment" class="has-background-light">
+        {{ comment.content }}
+      </div>
+      <br>
+      </p>
+    </div>
+  </div>
+</article>
 {% endfor %}
+
+<style>
+  #comment {
+    word-break: break-all;
+  }
+</style>
 
 {% endblock content %}
