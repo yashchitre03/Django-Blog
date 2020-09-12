@@ -82,6 +82,7 @@ class UserPostListView(ListView):
             query = ''
         context['option'] = option
         context['query'] = query
+        context['title'] = self.kwargs.get('username')
         return context
 
 
@@ -100,11 +101,12 @@ class PostContent(DetailView):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentForm()
 
+        post = Post.objects.get(pk=self.kwargs.get('pk'))
         if not self.request.user.is_anonymous:
-            post = Post.objects.get(pk=self.kwargs.get('pk'))
             context['liked'] = post.post_likes.filter(
                 user=self.request.user) and True or False
 
+        context['title'] = post.title
         return context
 
 
@@ -154,6 +156,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Create New Post'
+        return context
+
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -169,6 +176,11 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Edit Post'
+        return context
+
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
@@ -180,9 +192,14 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Post'
+        return context
+
 
 def about(request):
-    return render(request, 'blog/about.html', {'title': 'custom'})
+    return render(request, 'blog/about.html', {'title': 'About'})
 
 
 def report(request):
@@ -203,5 +220,5 @@ def report(request):
         return redirect('blog-home')
     else:
         form = ReportForm()
-        context = {'form': form}
+        context = {'form': form, 'title': 'Report'}
     return render(request, 'blog/report.html', context)

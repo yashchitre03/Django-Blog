@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
 
     {% if title %}
-    <title>Blog Home - {{title}}</title>
+    <title>{{title}}</title>
     {% else %}
-    <title>Blog Home</title>
+    <title>Welcome</title>
     {% endif %}
 </head>
 
@@ -105,6 +105,25 @@
         </div>
     </section>
 
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong>Web Application</strong> by <a href="https://github.com/yashchitre03">Yash Kiran
+                    Chitre</a>. The
+                source code is licensed
+                <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+            </p>
+            <a href="http://www.djangoproject.com/"><img
+                    src="https://www.djangoproject.com/m/img/badges/djangomade124x25.gif" border="0"
+                    alt="Made with Django." title="Made with Django." /></a>
+        </div>
+    </footer>
 </body>
+
+<style>
+    .footer {
+        position: relative;
+    }
+</style>
 
 </html>
