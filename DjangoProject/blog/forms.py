@@ -3,6 +3,9 @@ from .models import Comment
 
 
 class CommentForm(forms.ModelForm):
+    """
+        Form for users to add comments to an individual post.
+    """
     class Meta:
         model = Comment
         fields = ('content',)
@@ -12,6 +15,9 @@ class CommentForm(forms.ModelForm):
 
 
 class ReportForm(forms.Form):
+    """
+        Form for users to report any issue with the website.
+    """
     CHOICES = (
         ('Bug', 'Bug'),
         ('Content', 'Inappropriate content'),

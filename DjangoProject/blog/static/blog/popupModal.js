@@ -1,3 +1,7 @@
+/**
+ * Opens or closes the bulma modal for displaying markdown documentation.
+ */
+
 const link = document.querySelector("#ref");
 const modal = document.querySelector(".modal");
 const close = document.querySelector(".modal-close");

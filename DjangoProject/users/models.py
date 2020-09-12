@@ -11,7 +11,7 @@ class User(AbstractUser):
         unique=True,
         help_text='Required. 12 characters or fewer. Letters, digits and @/./+/-/_ only.',
         error_messages={
-            'unique': "A user with that username already exists.",
+            'unique': 'A user with that username already exists.',
         },
     )
     USERNAME_FIELD = 'username'

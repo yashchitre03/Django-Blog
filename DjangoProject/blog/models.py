@@ -5,12 +5,15 @@ from markdown_deux import markdown
 from markdown_deux.templatetags.markdown_deux_tags import markdown_allowed
 from django.contrib.auth import get_user_model
 
-# Create your models here.
+# Created the models here.
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=100)
+    """
+    Database model for individual posts.
+    """
 
+    title = models.CharField(max_length=100)
     contentHelpText = markdown_allowed() + " <a id='ref'>Quick reference</a>"
     content = models.TextField(help_text=contentHelpText)
     date_posted = models.DateTimeField(auto_now_add=True)
@@ -34,6 +37,11 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    """
+    Database model for individual Comments.
+    Comments have a Many-to-One relationship with the post and user models.
+    """
+
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='post_comments')
     author = models.ForeignKey(
@@ -50,6 +58,11 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
+    """
+    Database model for individual Likes.
+    Likes have a Many-to-One relationship with the post and user models.
+    """
+
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='post_likes')
     user = models.ForeignKey(
