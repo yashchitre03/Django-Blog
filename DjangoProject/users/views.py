@@ -35,7 +35,11 @@ def register(request):
 
             return render(request, 'users/confirm_email.html')
     else:
-        form = UserRegisterForm()
+        if request.user.is_anonymous:
+            form = UserRegisterForm()
+        else:
+            messages.error(request, 'Log-out before creating a new account!')
+            return redirect('blog-home')
     return render(request, 'users/register.html', {'form': form, 'title': 'Register'})
 
 
@@ -76,4 +80,17 @@ def activate(request, uidb64, token):
         return redirect('login')
     else:
         messages.error(request, 'The activation link is invalid!')
-        return render(request, 'uesrs/confirm_email.html')
+        return render(request, 'users/confirm_email.html')
+
+
+def delete_user(request):
+    if request.method == 'POST':
+        if request.POST.get('action') == 'delete':
+            request.user.delete()
+            messages.success(
+                request, 'Your account has been deleted successfully')
+            return redirect('blog-home')
+        else:
+            return redirect('profile')
+    else:
+        return render(request, 'users/delete_user.html')

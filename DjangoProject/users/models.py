@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 
 # Create your models here.
 
+
 class User(AbstractUser):
     username = models.CharField(
         max_length=12,
@@ -16,7 +17,6 @@ class User(AbstractUser):
     )
     USERNAME_FIELD = 'username'
 
-
     class Meta:
         pass
 
@@ -25,14 +25,11 @@ class Profile(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
 
-
     class Meta:
         pass
 
-    
     def __str__(self):
         return f'{self.user.username} Profile'
-
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

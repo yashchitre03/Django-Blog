@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<div class="columns is-centered">
+    <div class="box column is-half has-background-warning-light">
+        <form method="POST" action="{% url 'account_delete' %}">
+            {% csrf_token %}
+            <p>Are you sure you want to permanently delete your account? You will not be able to recover your account
+                once deleted!</p>
+            <br>
+            <button class="button is-danger" type="submit" name="action" value="delete">Yes, Delete</button>
+            <button class="button is-primary" type="submit" name="action" value="go_back">No, go back</button>
+
+        </form>
+    </div>
+</div>
+{% endblock content %}

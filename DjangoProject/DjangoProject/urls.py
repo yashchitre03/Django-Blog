@@ -27,6 +27,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('profile/', user_views.profile, name='profile'),
+    path('account-delete', user_views.delete_user, name='account_delete'),
     path('password-reset/',
          auth_views.PasswordResetView.as_view(
              template_name='users/password_reset.html'),
@@ -43,7 +44,7 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(
              template_name='users/password_reset_complete.html'),
          name='password_reset_complete'),
-    path('activate/<uidb64>/<token>/', user_views.activate, name = 'activate')
+    path('activate/<uidb64>/<token>/', user_views.activate, name='activate')
 ]
 
 if settings.DEBUG:
