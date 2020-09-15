@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
 from django.contrib.auth import get_user_model
+from pathlib import Path
 
 # Create your models here.
 
@@ -21,9 +22,16 @@ class User(AbstractUser):
         pass
 
 
+def image_file_path(instance, filename):
+    folder = Path('profile_pics')
+    user_id = Path(instance.user.username)
+    ext = '.jpg'
+    return str(folder / user_id.with_suffix(ext))
+
+
 class Profile(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    image = models.ImageField(default='default.jpg', upload_to=image_file_path)
 
     class Meta:
         pass
