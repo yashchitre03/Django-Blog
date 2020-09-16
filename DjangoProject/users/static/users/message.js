@@ -1,3 +1,7 @@
+/**
+ * Updates and deletes the message component of Bulma CSS.
+ */
+
 const title = document.querySelector(".message-header");
 if (title !== null) {
     title.innerHTML = "<p>Invalid credentials</p>" + title.innerHTML

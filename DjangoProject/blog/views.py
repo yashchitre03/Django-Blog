@@ -1,4 +1,7 @@
+import os
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.mail import EmailMessage
+
 from django.views import View
 from django.views.generic import (ListView,
                                   DetailView,
@@ -7,13 +10,13 @@ from django.views.generic import (ListView,
                                   DeleteView,
                                   FormView)
 from django.views.generic.detail import SingleObjectMixin
-from .models import Post, Comment, Like
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth import get_user_model
-from .forms import CommentForm, ReportForm
-import os
-from django.core.mail import EmailMessage
+
 from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+from .models import Post, Comment, Like
+from .forms import CommentForm, ReportForm
 
 # Created the views here.
 

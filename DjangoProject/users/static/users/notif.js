@@ -1,3 +1,7 @@
+/**
+ * Closes the notification on user click.
+ */
+
 var closeNotif = document.querySelector(".delete");
 if (closeNotif !== null) {
     closeNotif.addEventListener("click", function () {
