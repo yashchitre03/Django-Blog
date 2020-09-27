@@ -12,9 +12,9 @@ class Post(models.Model):
     """
     Database model for individual posts.
     """
+    contentHelpText = markdown_allowed() + " <a id='ref'>Quick reference</a>"
 
     title = models.CharField(max_length=100)
-    contentHelpText = markdown_allowed() + " <a id='ref'>Quick reference</a>"
     content = models.TextField(help_text=contentHelpText)
     date_posted = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
