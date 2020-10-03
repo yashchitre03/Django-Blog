@@ -22,7 +22,8 @@ from .forms import CommentForm, ReportForm
 
 
 def getResult(option, query):
-    """Returns list of Post objects according to the option selected by user in the search bar.
+    """
+    Returns list of Post objects according to the option selected by user in the search bar.
 
     Args:
         option (str): Option from the drop-down menu.
@@ -308,7 +309,8 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 def about(request):
-    """Returns the view for the about page.
+    """
+    Returns the view for the about page.
 
     Args:
         request (object): Information about the user request.
@@ -320,7 +322,8 @@ def about(request):
 
 
 def report(request):
-    """Returns the view for the report page. If a POST request is made, the form is cleaned and sent as an email.
+    """
+    Returns the view for the report page. If a POST request is made, the form is cleaned and sent as an email.
 
     Args:
         request (object): Information about the user request.
