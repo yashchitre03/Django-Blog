@@ -4,6 +4,7 @@ import random
 from blog.models import Post
 from django.contrib.auth import get_user_model
 
+
 class GenerateData:
 
     def __init__(self, seed=0):
