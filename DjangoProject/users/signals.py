@@ -20,4 +20,5 @@ def delete_profile(sender, instance, **kwargs):
     Deletes user profile picture when the account is deleted.
     """
     profile = Profile.objects.get(user=instance)
-    profile.image.delete(False)
+    if profile.image.name != 'default.jpg':
+        profile.image.delete(False)
