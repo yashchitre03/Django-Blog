@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
-from PIL import Image
+# from PIL import Image
 from pathlib import Path
 
 # Create your models here.

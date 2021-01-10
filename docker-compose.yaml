@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - "8080:8080"
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: .
+    volumes:
+      - static_data:/vol/web
+    env_file:
+      - .env
+
+volumes:
+  static_data:

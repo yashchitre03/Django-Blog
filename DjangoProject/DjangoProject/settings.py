@@ -19,12 +19,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO-SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 
 # Application definition
 
@@ -90,7 +93,7 @@ DATABASES = {
         'NAME': 'web_app_test',
         'USER': os.environ.get('AWS_RDS_USERNAME'),
         'PASSWORD': os.environ.get('AWS_RDS_PASS'),
-        'HOST': 'database-1.cvaeufxvnnbc.us-east-1.rds.amazonaws.com',
+        'HOST': 'yashkc.cvaeufxvnnbc.us-east-1.rds.amazonaws.com',
         'PORT': '5432'
     }
 }
@@ -131,20 +134,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+
+STATIC_ROOT = '/vol/web/static'
+STATIC_URL = '/static/static/'
 
 LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'login'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+
+MEDIA_ROOT = '/vol/web/media'
+MEDIA_URL = '/static/media/'
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('DJANGO-E')
-EMAIL_HOST_PASSWORD = os.environ.get('DJANGO-P')
+EMAIL_HOST_USER = os.environ.get('DJANGO_E')
+EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_P')
 
 # AWS S3 configuration
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
