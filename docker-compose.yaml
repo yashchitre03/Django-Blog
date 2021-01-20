@@ -2,22 +2,40 @@ version: '3.7'
 
 services:
   proxy:
+    image: 446122092870.dkr.ecr.us-east-1.amazonaws.com/django/proxy
+    deploy:
+      replicas: 1
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: django-app
+        awslogs-region: us-east-1
+        awslogs-stream: proxy
     build:
       context: ./proxy
     volumes:
       - static_data:/vol/static
     ports:
-      - "8080:8080"
+      - 80:8080
     depends_on:
       - app
 
   app:
+    image: 446122092870.dkr.ecr.us-east-1.amazonaws.com/django/app
+    deploy:
+      replicas: 1
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: django-app
+        awslogs-region: us-east-1
+        awslogs-stream: app
     build:
       context: .
     volumes:
       - static_data:/vol/web
     env_file:
-      - .env
+      - env/build.env
 
 volumes:
   static_data:
