@@ -5,7 +5,7 @@
 
 ## Table of contents
 * [General info](#general-info)
-* [Screenshots](#screenshots)
+* [Screenshots](#application-screenshots)
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [Features](#features)
