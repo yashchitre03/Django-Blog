@@ -5,7 +5,7 @@
 
 ## Table of contents
 * [General info](#general-info)
-* [Screenshots](#application-screenshots)
+* [Application Screenshots](#application-screenshots)
 * [Technologies](#technologies)
 * [Setup](#setup)
 * [Features](#features)
@@ -20,11 +20,18 @@ The idea was to build a platform where people could share their approach on vari
 Hence, this web application contains many features to facilitate this ease-of-use and will be explained in detail later.
 
 ## Application Screenshots
-![Example screenshot](readme_data/2.png)
+* Home page
 ![Example screenshot](readme_data/4.png)
-![Example screenshot](readme_data/8.png)
 ![Example screenshot](readme_data/12.png)
 ![Example screenshot](readme_data/13.png)
+  
+* About web-page
+![Example screenshot](readme_data/2.png)
+
+* Logout acknowledgement
+![Example screenshot](readme_data/8.png)
+  
+* Markdown cheatsheet
 ![Example screenshot](readme_data/6.png)
 
 ## Technologies
@@ -57,12 +64,179 @@ Hence, this web application contains many features to facilitate this ease-of-us
 * Gmail SMTP
 
 ## Setup
-To set up the project, make sure to install Docker and start all the necessary AWS instances given in [Technologies](#technologies).
-Then simply run the `runproject` script in the scripts' folder.
+To set up the project,
+* Install and setup docker (preferably on a Linux environment). 
+* Start the required [AWS services](#cloud-services) or setup similar local services (modify the startup script accordingly).
+* Finally, simply run the `runproject` script in the scripts' folder.
 
 ## Code Examples
-Show examples of usage:
-`put-your-code-here`
+* User registration form
+```python
+class UserRegisterForm(UserCreationForm):
+    """
+    Form for the user signup page.
+    """
+    email = forms.EmailField()
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'email', 'password1', 'password2', ]
+```
+
+* User profile database model
+```python
+class Profile(models.Model):
+    """
+    User Profile Model for profile pictures.
+    """
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to=image_file_path)
+
+    class Meta:
+        pass
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+```
+
+* New account signal processing
+```python
+@receiver(post_save, sender=get_user_model())
+def create_profile(sender, instance, created, **kwargs):
+    """
+    Creates the default profile after a new user is created.
+    """
+    if created:
+        new = Profile.objects.create(user=instance)
+        new.save()
+```
+
+* Delete user function based view
+```python
+@login_required
+def delete_user(request):
+    """
+    View for the user account deletion process.
+    """
+    if request.method == 'POST':
+
+        if request.POST.get('action') == 'delete':
+            request.user.delete()
+            messages.success(
+                request, 'Your account has been deleted successfully')
+            return redirect('blog-home')
+
+        else:
+            return redirect('profile')
+
+    else:
+        return render(request, 'users/delete_user.html')
+```
+
+* Detailed post/article class based view
+```python
+class PostDetailView(View):
+    """
+    Passes the request to an appropriate view.
+    View is for an individual post.
+    """
+
+    def get(self, request, *args, **kwargs):
+        """
+        Redirects to the PostContent view when a GET request is received.
+        """
+        view = PostContent.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Redirects to the PostComment view when a POST request is received.
+        """
+        view = PostComment.as_view()
+        return view(request, *args, **kwargs)
+```
+
+* Test cases
+```python
+class CommentFormTest(TestCase):
+
+    def testFormIsValid(self):
+        """
+        tests whether the comment form is valid for text following the constraints.
+        """
+        content = 'This is a test comment'
+        form_data = {'content': content}
+        form = CommentForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def testFormIsNotValid(self):
+          """
+        tests whether the comment form is invalid for text exceeding the constraints.
+        """
+        content = 'This is a test comment' * 12
+        form_data = {'content': content}
+        form = CommentForm(data=form_data)
+        self.assertFalse(form.is_valid())
+```
+
+* Docker-compose script
+```dockerfile
+version: '3.7'
+
+services:
+  proxy:
+    image: 446122092870.dkr.ecr.us-east-1.amazonaws.com/django/proxy
+    deploy:
+      replicas: 1
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: django-app
+        awslogs-region: us-east-1
+        awslogs-stream: proxy
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - 80:8080
+    depends_on:
+      - app
+
+  app:
+    image: 446122092870.dkr.ecr.us-east-1.amazonaws.com/django/app
+    deploy:
+      replicas: 1
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: django-app
+        awslogs-region: us-east-1
+        awslogs-stream: app
+    build:
+      context: .
+    volumes:
+      - static_data:/vol/web
+    env_file:
+      - env/build.env
+```
+
+* Project startup script
+```shell
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+
+docker build -t django/app .
+docker tag django/app:latest $DOCKER_REGISTRY/django/app:latest
+docker push $DOCKER_REGISTRY/django/app:latest
+
+docker build -t django/proxy .
+docker tag django/proxy:latest $DOCKER_REGISTRY/django/proxy:latest
+docker push $DOCKER_REGISTRY/django/proxy:latest
+
+CMD="docker stack deploy -c $DOCKER_COMPOSE_YML ec2 --with-registry-auth"
+DOCKER_HOST="ssh://$HOST" $CMD
+```
 
 ## Features
 List of features ready and TODOs for future development
@@ -113,14 +287,14 @@ List of features ready and TODOs for future development
   ![Example screenshot](readme_data/24.jpg)
 
 Future scope:
-* Add social websites' authentication.
-* Redo the project with Django REST framework.
+* Make the application more secure with random post id.
+* Redo the backend part of the project with Django REST framework as a REST API.
 
 ## Status
 Project is: _finished_ (may add features or patch bugs whenever necessary in the future).
 
 ## Inspiration
-[Corey Schafer's Django tutorials](https://www.youtube.com/user/schafer5), hundreds of medium posts, articles, and reddit community.
+[Corey Schafer's Django tutorials](https://www.youtube.com/user/schafer5), medium articles, articles, and reddit community.
 
 ## Contact
 [@yashchitre03](https://www.linkedin.com/in/yashchitre03/) - feel free to contact me!

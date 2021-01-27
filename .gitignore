@@ -133,3 +133,9 @@ notes.md
 
 # Image assets 
 media/
+
+# Pycharm files
+.idea
+
+# migration files
+**/migrations/
