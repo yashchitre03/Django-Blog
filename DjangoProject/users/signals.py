@@ -7,7 +7,7 @@ from .models import Profile
 @receiver(post_save, sender=get_user_model())
 def create_profile(sender, instance, created, **kwargs):
     """
-    Creates the default profile after a new user os created.
+    Creates the default profile after a new user is created.
     """
     if created:
         new = Profile.objects.create(user=instance)
