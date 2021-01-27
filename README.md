@@ -281,7 +281,7 @@ Future scope:
 ## Status
 Project is: _finished_ (may add features or patch bugs whenever necessary in the future).
 
-## Inspiration
+## Inspiration and Tutorials
 [Corey Schafer's Django tutorials](https://www.youtube.com/user/schafer5), medium articles, articles, and reddit community.
 
 ## Contact
