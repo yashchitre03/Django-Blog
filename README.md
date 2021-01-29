@@ -1,6 +1,6 @@
 # Social Web Application
-> A complete web application built on the Django framework in Python. 
-> Includes right from the visual front-end to the proxy servers, business logic and finally, the database. 
+> A web application built on the Django framework in Python. 
+> Includes different components from the visual front-end to the proxy servers, main logic, and the database. 
 > Please post any issues, bugs, tips for this project.
 
 ## Table of contents
@@ -17,7 +17,7 @@
 Looking at the many blog web applications being developed and as many tutorials with it, I wanted to build my own web application while learning the Django framework. 
 The purpose of this project was to develop a social/blog style web application.
 The idea was to build a platform where people could share their approach on various coding challenges as well as small tutorials easily.
-Hence, this web application contains many features to facilitate this ease-of-use and will be explained in detail later.
+Hence, this web application contains many features to facilitate this ease-of-use such as markdown code formatting, like and comment models, etc.
 
 ## Application Screenshots
 * Home page
@@ -227,7 +227,8 @@ DOCKER_HOST="ssh://$HOST" $CMD
 ```
 
 ## Features
-List of features ready and TODOs for future development
+
+### Implemented
 * Update profile
   ![Example screenshot](readme_data/1.png)
 
@@ -268,13 +269,14 @@ List of features ready and TODOs for future development
   ![Example screenshot](readme_data/19.png)
   
 * Mobile-view support
-  ![Example screenshot](readme_data/20.jpg)
-  ![Example screenshot](readme_data/21.jpg)
-  ![Example screenshot](readme_data/22.jpg)
-  ![Example screenshot](readme_data/23.jpg)
-  ![Example screenshot](readme_data/24.jpg)
+  
+  Mobile view           |  Mobile view
+  :-------------------------:|:-------------------------:
+  ![Example screenshot](readme_data/20.jpg)  |  ![Example screenshot](readme_data/21.jpg)
+  ![Example screenshot](readme_data/22.jpg)  |  ![Example screenshot](readme_data/23.jpg)
+  ![Example screenshot](readme_data/24.jpg)  |  
 
-Future scope:
+### Future scope / ToDo:
 * Make the application more secure with random post id.
 * Redo the backend part of the project with Django REST framework as a REST API.
 
