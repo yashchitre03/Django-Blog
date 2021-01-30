@@ -10,7 +10,7 @@
 * [Setup](#setup)
 * [Features](#features)
 * [Status](#status)
-* [Inspiration](#inspiration)
+* [Inspiration](#inspiration-and-tutorials)
 * [Contact](#contact)
 
 ## General info
