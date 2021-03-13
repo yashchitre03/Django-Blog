@@ -13,7 +13,7 @@
 * [Inspiration](#inspiration-and-tutorials)
 * [Contact](#contact)
 
-## General info
+## General Info
 Looking at the many blog web applications being developed and as many tutorials with it, I wanted to build my own web application while learning the Django framework. 
 The purpose of this project was to develop a social/blog style web application.
 The idea was to build a platform where people could share their approach on various coding challenges as well as small tutorials easily.
