@@ -4,7 +4,7 @@
 > Please post any issues, bugs, tips for this project.
 
 ## Table of contents
-* [General info](#general-info)
+* [General Info](#general-info)
 * [Application Screenshots](#application-screenshots)
 * [Technologies](#technologies)
 * [Setup](#setup)
